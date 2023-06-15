@@ -2,10 +2,11 @@
 namespace Siroko\App\Product\Application\Get;
 
 use Siroko\Shared\Request\RequestId;
+use Siroko\App\Product\Infrastructure\ProductRepository;
 
 class GetProduct {
-    private ProductRespository $product_repo;
-    public function __construct(private readonly ProductRespository $productRepo) {
+    private ProductRepository $product_repo;
+    public function __construct(private readonly ProductRepository $productRepo) {
         $this->product_repo = $productRepo;
     }
 

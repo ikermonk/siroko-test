@@ -4,8 +4,9 @@ namespace Siroko\App\Product\Infrastructure;
 use Siroko\App\Product\Domain\Product;
 use Siroko\Shared\Crud\GetServiceInterface;
 use Siroko\Shared\Crud\ListServiceInterface;
+use Siroko\App\Product\Domain\Exceptions\ProductNotFoundException;
 
-class ProductRespository implements GetServiceInterface, ListServiceInterface {
+class ProductRepository implements GetServiceInterface, ListServiceInterface {
     
     public function get(string $id): mixed {
         $products = $this->list();

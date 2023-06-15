@@ -75,9 +75,18 @@
     margin-right: 10px; /* Espacio entre el h1 y el contenido */
 }
   
-.container .contenido {
+.container .content {
     width: 100%;
     flex-grow: 1; /* Permite que el contenido ocupe el espacio restante */
+}
+
+.container .content table{
+    width: 100%;
+    flex-grow: 1; /* Permite que el contenido ocupe el espacio restante */
+}
+
+.container .content table td{
+    text-align: center;
 }
 
 .product {
