@@ -19,54 +19,13 @@
                 <img src="{{ asset('img/logo-siroko.png') }}" alt="Imagen" class="imagen">
             </div>
             <div id="mini-shopping-cart" class="mini-shopping-cart">
-                <div class="mini-shopping-cart carrito">
-                    <img src="{{ asset('img/cart.jpg') }}" alt="Carrito" class="icono-carrito">
-                    <span class="quantity">5</span>
-                    <span class="total">231 €</span>
-                </div>
-            </div>
-            <div id="mini-shopping-cart-layer" class="mini-shopping-cart-layer">
-                <div id="close-cart">
-                    <img src="{{ asset('img/close.png') }}" alt="Cerrar">
-                </div>
-                <table class="shoopping-cart">
-                    <thead>
-                        <tr>
-                            <th>Producto</th>
-                            <th>Precio</th>
-                            <th>Cantidad</th>
-                            <th>Total</th>
-                            <th>Quitar</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>K3S ZURICH</td>
-                            <td>35 €</td>
-                            <td>
-                                <input type="number" id="quantity" name="quantity" value="1">
-                            </td>
-                            <td>35 €</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>M2 NEVADA</td>
-                            <td>49 €</td>
-                            <td>
-                                <input type="number" id="quantity" name="quantity" value="2">
-                            </td>
-                            <td>98 €</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>ASPEN</td>
-                            <td>49 €</td>
-                            <td>2</td>
-                            <td>98 €</td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                </table>
+                <a href="{{ route('cart') }}">
+                    <div class="mini-shopping-cart carrito">
+                        <img src="{{ asset('img/cart.jpg') }}" alt="Carrito" class="icono-carrito">
+                        <span class="quantity">{{ $cart->get_total_items() }}</span>
+                        <span class="total">{{ $cart->get_total() }}</span>
+                    </div>
+                </a>
             </div>
         </header>
 

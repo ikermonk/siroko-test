@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.main', ['cart' => $cart])
 
 @section('content')
 
@@ -56,9 +56,9 @@
                 </div>
                 <div class="content-actions">
                     <a href="{{ route('shop') }}" class="button">Seguir Comprando</a>
-                    <button type="submit" name="action" value="clear">Limpiar Carrito</button>
-                    <button type="submit" name="action" value="update">Actualizar Carrito</button>
-                    <button type="submit" name="action" value="checkout">Confirmar</button>
+                    <button type="submit" class="button" name="action" value="clear">Limpiar Carrito</button>
+                    <button type="submit" class="button" name="action" value="update">Actualizar Carrito</button>
+                    <button type="submit" class="button" name="action" value="checkout">Confirmar</button>
                 </div>
         @else
             <p>No has agregado ningún producto al carrito.</p>

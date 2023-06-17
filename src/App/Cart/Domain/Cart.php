@@ -11,6 +11,16 @@ class Cart {
         $this->items = $items;
     }
 
+    public function get_total_items(): int {
+        $total_items = 0;
+        if (isset($this->items) && is_array($this->items) && sizeof($this->items) > 0) {
+            foreach ($this->items as $item) {
+                $total_items += $item->quantity; 
+            }
+        }
+        return $total_items;
+    }
+
     public function get_total(): string {
         $total = 0;
         if (isset($this->items) && is_array($this->items) && sizeof($this->items) > 0) {
