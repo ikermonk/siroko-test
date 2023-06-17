@@ -13,10 +13,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', '\Siroko\App\Shop\Presentation\Controllers\ShopController@index');
+Route::get('/', '\Siroko\App\Shop\Presentation\Controllers\ShopController@index')->name("shop");
 Route::get('/cart', '\Siroko\App\Cart\Presentation\Controllers\CartController@index');
 
 Route::post('/cart-add', '\Siroko\App\Cart\Presentation\Controllers\CartController@add')->name('cart.add');
+Route::post('/cart-change', '\Siroko\App\Cart\Presentation\Controllers\CartController@change')->name('cart.change');
 Route::post('/cart-update', '\Siroko\App\Cart\Presentation\Controllers\CartController@update')->name('cart.update');
 Route::post('/cart-remove', '\Siroko\App\Cart\Presentation\Controllers\CartController@remove')->name('cart.remove');
 Route::post('/cart-clear', '\Siroko\App\Cart\Presentation\Controllers\CartController@clear')->name('cart.clear');
