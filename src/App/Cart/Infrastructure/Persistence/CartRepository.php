@@ -7,6 +7,7 @@ use Siroko\Shared\Apicalls\GetCartApiCall;
 use Siroko\Shared\Crud\AddServiceInterface;
 use Siroko\Shared\Crud\GetServiceInterface;
 use Siroko\Shared\Utils\UtilsApicallService;
+use Siroko\Shared\Apicalls\DeleteItemApicall;
 use Siroko\Shared\Crud\DeleteServiceInterface;
 use Siroko\Shared\Crud\UpdateServiceInterface;
 use Siroko\Shared\Apicalls\AddLineToCartApicall;
@@ -16,11 +17,13 @@ class CartRepository implements GetServiceInterface, AddServiceInterface, Update
     private ProductRepository $product_repo;
     private GetCartApiCall $get_cart_apicall;
     private AddLineToCartApicall $add_line_to_cart_apicall;
+    private DeleteItemApicall $delete_item_apicall;
     public function __construct(private readonly GetCartApiCall $getCartApicall, private readonly ProductRepository $productRepo, 
-    private readonly AddLineToCartApicall $addLineToCartApicall) {
+    private readonly AddLineToCartApicall $addLineToCartApicall, private readonly DeleteItemApicall $deleteItemApicall) {
         $this->product_repo = $productRepo;
         $this->get_cart_apicall = $getCartApicall;
         $this->add_line_to_cart_apicall = $addLineToCartApicall;
+        $this->delete_item_apicall = $deleteItemApicall;
     }
 
     public function get(string $id): mixed {
@@ -46,7 +49,8 @@ class CartRepository implements GetServiceInterface, AddServiceInterface, Update
     }    
 
     public function delete(string $id) {
-
+        $data["id_line"] = $id;
+        $this->delete_item_apicall->api_call($_ENV["API_DOMAIN"] . "remove-item", "DELETE", $data);
     }
 }
 ?>

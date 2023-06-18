@@ -16,7 +16,7 @@ class AddLineToCart {
     }
 
     //Cart and Product Id
-    public function add(RequestAddItem $requestAddToCart) {
+    public function add(RequestAddItem $requestAddToCart): void {
         $data["id_cart"] = $requestAddToCart->id_cart;
         $data["user_id"] = $requestAddToCart->user_id;
         $data["product_id"] = $requestAddToCart->product_id;
