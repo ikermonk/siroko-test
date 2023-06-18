@@ -10,7 +10,9 @@ use Siroko\Shared\Request\RequestId;
 use Illuminate\Support\Facades\Redirect;
 use Siroko\Shared\Request\RequestAddItem;
 use Siroko\App\Cart\Application\Get\GetCart;
+use Siroko\Shared\Request\RequestUpdateCart;
 use Siroko\App\Cart\Application\Update\DeleteItem;
+use Siroko\App\Cart\Application\Update\UpdateCart;
 use Siroko\App\Cart\Application\Update\AddLineToCart;
 
 class CartController {
@@ -18,12 +20,14 @@ class CartController {
     private GetCart $get_cart_service;
     private AddLineToCart $add_line_cart_service;
     private DeleteItem $delete_item_service;
+    private UpdateCart $update_cart_service;
     public function __construct(private readonly GetCart $getCartService, private readonly UserService $userService, 
-    private readonly AddLineToCart $addLineCartService, private readonly DeleteItem $deleteItemService) {
+    private readonly AddLineToCart $addLineCartService, private readonly DeleteItem $deleteItemService, private readonly UpdateCart $updateCartService) {
         $this->user_service = $userService;
         $this->get_cart_service = $getCartService;
         $this->add_line_cart_service = $addLineCartService;
         $this->delete_item_service = $deleteItemService;
+        $this->update_cart_service = $updateCartService;
     }
 
     public function index() {
@@ -79,7 +83,22 @@ class CartController {
     }
 
     public function update(Request $request) {
-        dd($request->all());
+        try {
+            //Update Cart:
+            $requestUpdateCart = new RequestUpdateCart($request->all());
+            if ($requestUpdateCart->validate()) {
+                $this->update_cart_service->update($requestUpdateCart);
+                return Redirect::to('cart');
+            }
+            return response()->json([
+                'message' => 'Ha ocurrido un error al tratar de actualizar el Carrito.'
+            ], 409);
+        } catch (Exception $e) {
+            Log::error("CartController - add - Exception: " . $e->getMessage());
+            return response()->json([
+                'message' => 'Ha ocurrido un error al tratar de agregar este Producto.'
+            ], 500);
+        }
     }       
 
     public function remove(Request $request) {

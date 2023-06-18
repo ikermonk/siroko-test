@@ -24,7 +24,7 @@
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->price }}</td>
                                     <td>
-                                        <input type="number" id="quantity-{{ $item->id }}" name="quantity-{{ $item->id }}" value="{{ $item->quantity }}">
+                                        <input type="number" id="quantity-{{ $item->id }}" name="quantity-{{ $item->id }}" value="{{ $item->quantity }}" min="1">
                                     </td>
                                     <td>{{ $item->line_total }}</td>
                                     <td>
@@ -56,8 +56,8 @@
                 </div>
                 <div class="content-actions">
                     <a href="{{ route('shop') }}" class="button">Seguir Comprando</a>
-                    <button type="submit" class="button" name="action" value="clear">Limpiar Carrito</button>
                     <button type="submit" class="button" name="action" value="update">Actualizar Carrito</button>
+                    <button type="submit" class="button" name="action" value="clear">Limpiar Carrito</button>
                     <button type="submit" class="button" name="action" value="checkout">Confirmar</button>
                 </div>
         @else
