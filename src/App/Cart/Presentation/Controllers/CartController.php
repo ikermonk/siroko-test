@@ -38,6 +38,7 @@ class CartController {
     public function index() {
         //Get User:
         $user = $this->user_service->get_user_session();
+        //Get Cart
         $requestCart = new RequestId($user);
         $cart = $this->get_cart_service->get_cart($requestCart);
         return view('cart', ["cart" => $cart]);
@@ -146,7 +147,15 @@ class CartController {
     }
 
     public function confirm(Request $request) {
-        dd($request->all());
+        //Get User:
+        $user = $this->user_service->get_user_session();
+        //Get Cart
+        $requestCart = new RequestId($user);
+        $cart = $this->get_cart_service->get_cart($requestCart);
+        if (isset($cart) && isset($cart->items) && is_array($cart->items) && sizeof($cart->items) > 0) {
+            return view('checkout', ["cart" => $cart]);
+        }
+        return view('/', ["cart" => $cart]);
     } 
 
 }
