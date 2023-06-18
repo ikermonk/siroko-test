@@ -6,6 +6,7 @@ use Siroko\App\Cart\Domain\CartItem;
 use Siroko\Shared\Apicalls\GetCartApiCall;
 use Siroko\Shared\Crud\AddServiceInterface;
 use Siroko\Shared\Crud\GetServiceInterface;
+use Siroko\Shared\Apicalls\ClearCartApicall;
 use Siroko\Shared\Utils\UtilsApicallService;
 use Siroko\Shared\Apicalls\DeleteItemApicall;
 use Siroko\Shared\Apicalls\UpdateCartApicall;
@@ -20,14 +21,16 @@ class CartRepository implements GetServiceInterface, AddServiceInterface, Update
     private AddLineToCartApicall $add_line_to_cart_apicall;
     private DeleteItemApicall $delete_item_apicall;
     private UpdateCartApicall $update_cart_apicall;
+    private ClearCartApicall $clear_cart_apicall;
     public function __construct(private readonly GetCartApiCall $getCartApicall, private readonly ProductRepository $productRepo, 
     private readonly AddLineToCartApicall $addLineToCartApicall, private readonly DeleteItemApicall $deleteItemApicall, 
-    private readonly UpdateCartApicall $updateCartApicall) {
+    private readonly UpdateCartApicall $updateCartApicall, private readonly ClearCartApicall $clearCartApicall) {
         $this->product_repo = $productRepo;
         $this->get_cart_apicall = $getCartApicall;
         $this->add_line_to_cart_apicall = $addLineToCartApicall;
         $this->delete_item_apicall = $deleteItemApicall;
         $this->update_cart_apicall = $updateCartApicall;
+        $this->clear_cart_apicall = $clearCartApicall;
     }
 
     public function get(string $id): mixed {
@@ -51,9 +54,13 @@ class CartRepository implements GetServiceInterface, AddServiceInterface, Update
         return $this->update_cart_apicall->api_call($_ENV["API_DOMAIN"] . "cart/" . $id, "PUT", $object);
     }    
 
-    public function delete(string $id) {
+    public function delete(string $id): void {
         $data["id_line"] = $id;
         $this->delete_item_apicall->api_call($_ENV["API_DOMAIN"] . "remove-item", "DELETE", $data);
+    }
+
+    public function clear(mixed $data): void {
+        $this->clear_cart_apicall->api_call($_ENV["API_DOMAIN"] . "clear", "DELETE", $data);
     }
 
 }

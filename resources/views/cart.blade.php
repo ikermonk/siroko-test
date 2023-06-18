@@ -4,8 +4,7 @@
 
     <h1>Carrito de la Compra</h1>
     <div class="content">
-        @if (isset($cart) && isset($cart->items) && is_array($cart->items))
-            
+        @if (isset($cart) && isset($cart->items) && is_array($cart->items) && sizeof($cart->items) > 0)
             <form action="{{ route('cart.change') }}" method="post">
                 @csrf
                 <input type="hidden" id="cart_id" name="cart_id" value="{{ $cart->id }}">
@@ -60,8 +59,12 @@
                     <button type="submit" class="button" name="action" value="clear">Limpiar Carrito</button>
                     <button type="submit" class="button" name="action" value="checkout">Confirmar</button>
                 </div>
+            </form>
         @else
             <p>No has agregado ningún producto al carrito.</p>
+            <div class="content-actions">
+                <a href="{{ route('shop') }}" class="button">Seguir Comprando</a>
+            </div>
         @endif  
     </div>
 
