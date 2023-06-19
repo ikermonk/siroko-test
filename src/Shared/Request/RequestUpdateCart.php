@@ -6,10 +6,12 @@ use Illuminate\Support\Facades\Log;
 
 class RequestUpdateCart {
     public string $id_cart;
+    public string $user_id;
     public array $items;
-    public function __construct(mixed $objet) {
+    public function __construct(string $user_id, mixed $objet) {
         $data = $this->getData($objet);
         $this->id_cart = $data->id_cart;
+        $this->user_id = $user_id;
         $this->items = $data->items;
     }
 
@@ -32,6 +34,7 @@ class RequestUpdateCart {
     public function validate(): bool {
         Log::info("Data => " . $this->id_cart . " // " . json_encode($this->items));
         return isset($this->id_cart) && $this->id_cart !== ""
+            && isset($this->user_id) && $this->user_id !== ""
             && isset($this->items) && is_array($this->items) && sizeof($this->items);
     }
 

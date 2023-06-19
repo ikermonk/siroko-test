@@ -11,7 +11,9 @@ class ClearCart {
     }
 
     public function clear(RequestClearCart $request): void {
-        $this->cart_repo->clear($request->items);
+        $data['user_id'] = $request->user_id;
+        $data['items'] = $request->items;
+        $this->cart_repo->clear($data);
     }
 }
 ?>

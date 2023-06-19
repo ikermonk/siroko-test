@@ -5,9 +5,11 @@ use stdClass;
 use Illuminate\Support\Facades\Log;
 
 class RequestClearCart {
+    public string $user_id;
     public array $items;
-    public function __construct(mixed $objet) {
+    public function __construct(string $user_id, mixed $objet) {
         $data = $this->getData($objet);
+        $this->user_id = $user_id;
         $this->items = $data->items;
     }
 

@@ -50,13 +50,14 @@ class CartRepository implements GetServiceInterface, AddServiceInterface, Update
         return $this->add_line_to_cart_apicall->api_call($_ENV["API_DOMAIN"] . "cart-item", "POST", $object);
     }
 
-    public function update(string $id, mixed $object): mixed {
-        return $this->update_cart_apicall->api_call($_ENV["API_DOMAIN"] . "cart/" . $id, "PUT", $object);
+    public function update(string $id, mixed $object, string $user_id = null): mixed {
+        $data['user_id'] = (isset ($user_id)) ? $user_id : null;
+        $data['items'] = $object;
+        return $this->update_cart_apicall->api_call($_ENV["API_DOMAIN"] . "cart/" . $id, "PUT", $data);
     }    
 
-    public function delete(string $id): void {
-        $data["id_line"] = $id;
-        $this->delete_item_apicall->api_call($_ENV["API_DOMAIN"] . "remove-item", "DELETE", $data);
+    public function delete(mixed $object): void {
+        $this->delete_item_apicall->api_call($_ENV["API_DOMAIN"] . "remove-item", "DELETE", $object);
     }
 
     public function clear(mixed $data): void {

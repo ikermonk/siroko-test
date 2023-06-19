@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Redirect;
 use Siroko\Shared\Request\RequestAddItem;
 use Siroko\Shared\Request\RequestClearCart;
 use Siroko\App\Cart\Application\Get\GetCart;
+use Siroko\Shared\Request\RequestRemoveItem;
 use Siroko\Shared\Request\RequestUpdateCart;
 use Siroko\App\Cart\Application\Update\DeleteItem;
 use Siroko\App\Cart\Application\Update\UpdateCart;
@@ -90,8 +91,10 @@ class CartController {
 
     public function update(Request $request) {
         try {
+            //Get User:
+            $user = $this->user_service->get_user_session();
             //Update Cart:
-            $requestUpdateCart = new RequestUpdateCart($request->all());
+            $requestUpdateCart = new RequestUpdateCart($user, $request->all());
             if ($requestUpdateCart->validate()) {
                 $this->update_cart_service->update($requestUpdateCart);
                 return Redirect::to('cart');
@@ -109,9 +112,11 @@ class CartController {
 
     public function remove(Request $request) {
         try {
+            //Get User:
+            $user = $this->user_service->get_user_session();
             if (isset($request["line_id"]) && $request["line_id"] !== "") {
                 //Remove Cart Line:
-                $requestDelete = new RequestId($request["line_id"]);
+                $requestDelete = new RequestRemoveItem($request["line_id"], $user);
                 $this->delete_item_service->remove_item($requestDelete);
                 return Redirect::to('cart');
             }
@@ -129,8 +134,10 @@ class CartController {
     
     public function clear(Request $request) {
         try {
+            //Get User:
+            $user = $this->user_service->get_user_session();
             //Clear Cart:
-            $requestClearCart = new RequestClearCart($request->all());
+            $requestClearCart = new RequestClearCart($user, $request->all());
             if ($requestClearCart->validate()) {
                 $this->clear_cart_service->clear($requestClearCart);
                 return Redirect::to('cart');

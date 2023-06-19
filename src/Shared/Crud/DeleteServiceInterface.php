@@ -2,6 +2,6 @@
 namespace Siroko\Shared\Crud;
 
 interface DeleteServiceInterface {
-    public function delete(string $id);
+    public function delete(mixed $object);
 }
 ?>

@@ -11,7 +11,7 @@ class UpdateCart {
     }
 
     public function update(RequestUpdateCart $request): void {
-        $this->cart_repo->update($request->id_cart, $request->items);
+        $this->cart_repo->update($request->id_cart, $request->items, $request->user_id);
     }
 }
 ?>
