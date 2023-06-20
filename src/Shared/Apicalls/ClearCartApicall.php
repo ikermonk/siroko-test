@@ -8,7 +8,7 @@ use Siroko\Shared\Apicalls\Exceptions\ApiCallException;
 class ClearCartApicall implements IApiCallService {
     public function api_call(string $endpoint, string $method, mixed $data = null): mixed {
         $res = Http::delete($endpoint, $data);
-        if (isset($res)) return $res;
+        if (isset($res)) return $res->json();
         throw new ApiCallException();
     }
 }

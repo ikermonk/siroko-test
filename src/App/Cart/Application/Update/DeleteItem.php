@@ -1,6 +1,7 @@
 <?php
 namespace Siroko\App\Cart\Application\Update;
 
+use Siroko\App\Cart\Domain\Cart;
 use Siroko\Shared\Request\RequestRemoveItem;
 use Siroko\App\Cart\Infrastructure\Persistence\CartRepository;
 
@@ -10,10 +11,10 @@ class DeleteItem {
         $this->cart_repo = $cartRepo;
     }
 
-    public function remove_item(RequestRemoveItem $request): void {
+    public function remove_item(RequestRemoveItem $request): Cart {
         $data["id_line"] = $request->id;
         $data["user_id"] = $request->user_id;
-        $this->cart_repo->delete($data);
+        return $this->cart_repo->delete($data);
     }
 }
 ?>

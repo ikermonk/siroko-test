@@ -2,7 +2,6 @@
 namespace Siroko\App\Cart\Application\Update;
 
 use Siroko\App\Cart\Domain\Cart;
-use Siroko\App\Cart\Domain\CartItem;
 use Siroko\Shared\Request\RequestAddItem;
 use Siroko\App\Product\Infrastructure\ProductRepository;
 use Siroko\App\Cart\Infrastructure\Persistence\CartRepository;
@@ -16,12 +15,12 @@ class AddLineToCart {
     }
 
     //Cart and Product Id
-    public function add(RequestAddItem $requestAddToCart): void {
+    public function add(RequestAddItem $requestAddToCart): Cart {
         $data["id_cart"] = $requestAddToCart->id_cart;
         $data["user_id"] = $requestAddToCart->user_id;
         $data["product_id"] = $requestAddToCart->product_id;
         $data["quantity"] = $requestAddToCart->quantity;
-        $this->cart_repo->add($data);
+        return $this->cart_repo->add($data);
     }
 }
 ?>

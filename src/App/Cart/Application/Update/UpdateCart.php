@@ -1,6 +1,7 @@
 <?php
 namespace Siroko\App\Cart\Application\Update;
 
+use Siroko\App\Cart\Domain\Cart;
 use Siroko\Shared\Request\RequestUpdateCart;
 use Siroko\App\Cart\Infrastructure\Persistence\CartRepository;
 
@@ -10,8 +11,8 @@ class UpdateCart {
         $this->cart_repo = $cartRepo;
     }
 
-    public function update(RequestUpdateCart $request): void {
-        $this->cart_repo->update($request->id_cart, $request->items, $request->user_id);
+    public function update(RequestUpdateCart $request): Cart {
+        return $this->cart_repo->update($request->id_cart, $request->items, $request->user_id);
     }
 }
 ?>

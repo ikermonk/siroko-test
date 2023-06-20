@@ -55,8 +55,8 @@ class CartController {
             //Add Line to Cart:
             if(isset($request["product_id"]) && $request["product_id"] !== "" && isset($request["quantity"]) && $request["quantity"] > 0) {
                 $requestAddToCart = new RequestAddItem($cart->id, $user, $request["product_id"], $request["quantity"]);
-                $this->add_line_cart_service->add($requestAddToCart);
-                return Redirect::to('cart');
+                $cart = $this->add_line_cart_service->add($requestAddToCart);
+                return view('cart', ["cart" => $cart]);
             }
             return response()->json([
                 'message' => 'Ha ocurrido un error al tratar de agregar este Producto.'
@@ -96,8 +96,8 @@ class CartController {
             //Update Cart:
             $requestUpdateCart = new RequestUpdateCart($user, $request->all());
             if ($requestUpdateCart->validate()) {
-                $this->update_cart_service->update($requestUpdateCart);
-                return Redirect::to('cart');
+                $cart = $this->update_cart_service->update($requestUpdateCart);
+                return view('cart', ["cart" => $cart]);
             }
             return response()->json([
                 'message' => 'Ha ocurrido un error al tratar de actualizar el Carrito.'
@@ -117,8 +117,8 @@ class CartController {
             if (isset($request["line_id"]) && $request["line_id"] !== "") {
                 //Remove Cart Line:
                 $requestDelete = new RequestRemoveItem($request["line_id"], $user);
-                $this->delete_item_service->remove_item($requestDelete);
-                return Redirect::to('cart');
+                $cart = $this->delete_item_service->remove_item($requestDelete);
+                return view('cart', ["cart" => $cart]);
             }
             return response()->json([
                 'message' => 'Ha ocurrido un error al tratar de agregar este Producto.'
@@ -139,8 +139,8 @@ class CartController {
             //Clear Cart:
             $requestClearCart = new RequestClearCart($user, $request->all());
             if ($requestClearCart->validate()) {
-                $this->clear_cart_service->clear($requestClearCart);
-                return Redirect::to('cart');
+                $cart = $this->clear_cart_service->clear($requestClearCart);
+                return view('cart', ["cart" => $cart]);
             }
             return response()->json([
                 'message' => 'Ha ocurrido un error al tratar de actualizar el Carrito.'

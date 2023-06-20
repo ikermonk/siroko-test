@@ -47,21 +47,57 @@ class CartRepository implements GetServiceInterface, AddServiceInterface, Update
     }
 
     public function add(mixed $object): mixed {
-        return $this->add_line_to_cart_apicall->api_call($_ENV["API_DOMAIN"] . "cart-item", "POST", $object);
+        $cart_res = $this->add_line_to_cart_apicall->api_call($_ENV["API_DOMAIN"] . "cart-item", "POST", $object);
+        $cart_obj = new Cart($cart_res["id"], $cart_res["user_id"], []);
+        if (isset($cart_res["items"]) && is_array($cart_res["items"]) && sizeof($cart_res["items"]) > 0) {
+            foreach ($cart_res["items"] as $cart_item) {
+                $product = $this->product_repo->get($cart_item["product_id"]);
+                $cart_item_obj = new CartItem($cart_item["id"], $product->id, $product->name, $cart_item["quantity"], $product->price, ($product->price * $cart_item["quantity"]));
+                array_push($cart_obj->items, $cart_item_obj);
+            }
+        }
+        return $cart_obj;
     }
 
     public function update(string $id, mixed $object, string $user_id = null): mixed {
         $data['user_id'] = (isset ($user_id)) ? $user_id : null;
         $data['items'] = $object;
-        return $this->update_cart_apicall->api_call($_ENV["API_DOMAIN"] . "cart/" . $id, "PUT", $data);
+        $cart_res = $this->update_cart_apicall->api_call($_ENV["API_DOMAIN"] . "cart/" . $id, "PUT", $data);
+        $cart_obj = new Cart($cart_res["id"], $cart_res["user_id"], []);
+        if (isset($cart_res["items"]) && is_array($cart_res["items"]) && sizeof($cart_res["items"]) > 0) {
+            foreach ($cart_res["items"] as $cart_item) {
+                $product = $this->product_repo->get($cart_item["product_id"]);
+                $cart_item_obj = new CartItem($cart_item["id"], $product->id, $product->name, $cart_item["quantity"], $product->price, ($product->price * $cart_item["quantity"]));
+                array_push($cart_obj->items, $cart_item_obj);
+            }
+        }
+        return $cart_obj;
     }    
 
-    public function delete(mixed $object): void {
-        $this->delete_item_apicall->api_call($_ENV["API_DOMAIN"] . "remove-item", "DELETE", $object);
+    public function delete(mixed $object): Cart {
+        $cart_res = $this->delete_item_apicall->api_call($_ENV["API_DOMAIN"] . "remove-item", "DELETE", $object);
+        $cart_obj = new Cart($cart_res["id"], $cart_res["user_id"], []);
+        if (isset($cart_res["items"]) && is_array($cart_res["items"]) && sizeof($cart_res["items"]) > 0) {
+            foreach ($cart_res["items"] as $cart_item) {
+                $product = $this->product_repo->get($cart_item["product_id"]);
+                $cart_item_obj = new CartItem($cart_item["id"], $product->id, $product->name, $cart_item["quantity"], $product->price, ($product->price * $cart_item["quantity"]));
+                array_push($cart_obj->items, $cart_item_obj);
+            }
+        }
+        return $cart_obj;
     }
 
-    public function clear(mixed $data): void {
-        $this->clear_cart_apicall->api_call($_ENV["API_DOMAIN"] . "clear", "DELETE", $data);
+    public function clear(mixed $data): Cart {
+        $cart_res = $this->clear_cart_apicall->api_call($_ENV["API_DOMAIN"] . "clear", "DELETE", $data);
+        $cart_obj = new Cart($cart_res["id"], $cart_res["user_id"], []);
+        if (isset($cart_res["items"]) && is_array($cart_res["items"]) && sizeof($cart_res["items"]) > 0) {
+            foreach ($cart_res["items"] as $cart_item) {
+                $product = $this->product_repo->get($cart_item["product_id"]);
+                $cart_item_obj = new CartItem($cart_item["id"], $product->id, $product->name, $cart_item["quantity"], $product->price, ($product->price * $cart_item["quantity"]));
+                array_push($cart_obj->items, $cart_item_obj);
+            }
+        }
+        return $cart_obj;
     }
 
 }
