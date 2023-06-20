@@ -56,7 +56,7 @@ class CartController {
             if(isset($request["product_id"]) && $request["product_id"] !== "" && isset($request["quantity"]) && $request["quantity"] > 0) {
                 $requestAddToCart = new RequestAddItem($cart->id, $user, $request["product_id"], $request["quantity"]);
                 $cart = $this->add_line_cart_service->add($requestAddToCart);
-                return view('cart', ["cart" => $cart]);
+                return Redirect::route('cart');
             }
             return response()->json([
                 'message' => 'Ha ocurrido un error al tratar de agregar este Producto.'
@@ -86,7 +86,7 @@ class CartController {
                 return $this->confirm($request);
                 break;
         }
-        return Redirect::to('cart');
+        return Redirect::route('cart');
     }
 
     public function update(Request $request) {
@@ -97,7 +97,7 @@ class CartController {
             $requestUpdateCart = new RequestUpdateCart($user, $request->all());
             if ($requestUpdateCart->validate()) {
                 $cart = $this->update_cart_service->update($requestUpdateCart);
-                return view('cart', ["cart" => $cart]);
+                return Redirect::route('cart');
             }
             return response()->json([
                 'message' => 'Ha ocurrido un error al tratar de actualizar el Carrito.'
@@ -118,7 +118,7 @@ class CartController {
                 //Remove Cart Line:
                 $requestDelete = new RequestRemoveItem($request["line_id"], $user);
                 $cart = $this->delete_item_service->remove_item($requestDelete);
-                return view('cart', ["cart" => $cart]);
+                return Redirect::route('cart');
             }
             return response()->json([
                 'message' => 'Ha ocurrido un error al tratar de agregar este Producto.'
@@ -129,7 +129,6 @@ class CartController {
                 'message' => 'Ha ocurrido un error al tratar de eliminar este Producto.'
             ], 500);
         }
-        return Redirect::to('cart');
     }
     
     public function clear(Request $request) {
@@ -140,7 +139,7 @@ class CartController {
             $requestClearCart = new RequestClearCart($user, $request->all());
             if ($requestClearCart->validate()) {
                 $cart = $this->clear_cart_service->clear($requestClearCart);
-                return view('cart', ["cart" => $cart]);
+                return Redirect::route('cart');
             }
             return response()->json([
                 'message' => 'Ha ocurrido un error al tratar de actualizar el Carrito.'
@@ -160,9 +159,9 @@ class CartController {
         $requestCart = new RequestId($user);
         $cart = $this->get_cart_service->get_cart($requestCart);
         if (isset($cart) && isset($cart->items) && is_array($cart->items) && sizeof($cart->items) > 0) {
-            return view('checkout', ["cart" => $cart]);
+            return Redirect::route('cart');
         }
-        return view('/', ["cart" => $cart]);
+        return Redirect::route('/', ["cart" => $cart]);
     } 
 
 }
