@@ -8,7 +8,7 @@ use Siroko\App\Product\Domain\Exceptions\ProductNotFoundException;
 
 class ProductRepository implements GetServiceInterface, ListServiceInterface {
     
-    public function get(string $id): mixed {
+    public function get(string $id, string $by = null): mixed {
         $products = $this->list();
         foreach ($products as $product) {
             if ($product->id === $id) return $product;

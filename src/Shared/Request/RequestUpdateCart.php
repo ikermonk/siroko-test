@@ -39,7 +39,7 @@ class RequestUpdateCart {
     }
 
     private function get_item_info(string $item, string $quantity): mixed {
-        $item_exploded = explode("-", $item);
+        $item_exploded = explode("--", $item);
         $id_line = $item_exploded[1];
         $line = new stdClass();
         $line->id = $id_line;

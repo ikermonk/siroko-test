@@ -12,8 +12,8 @@ class GetCartApiCall implements IApiCallService {
         $this->utils_apicall_service = $utilsApicallService;
     }
 
-    public function api_call(string $endpoint, string $method, string $data = null): mixed {
-        $res = Http::get($endpoint);
+    public function api_call(string $endpoint, string $method, mixed $data = null): mixed {
+        $res = Http::get($endpoint, $data);
         if (isset($res)) return $res->json();
         throw new ApiCallException();
     }

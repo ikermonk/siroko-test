@@ -7,7 +7,7 @@
         @if (isset($cart) && isset($cart->items) && is_array($cart->items) && sizeof($cart->items) > 0)
             <form action="{{ route('cart.change') }}" method="post">
                 @csrf
-                <input type="hidden" id="cart_id" name="cart_id" value="{{ $cart->id }}">
+                <input type="hidden" id="cart_id" name="cart_id" value="{{ $cart->uuid }}">
                 <div class="content-table">
                     <table>
                         <thead>
@@ -23,13 +23,13 @@
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->price }}</td>
                                     <td>
-                                        <input type="number" id="quantity-{{ $item->id }}" name="quantity-{{ $item->id }}" value="{{ $item->quantity }}" min="1">
+                                        <input type="number" id="quantity--{{ $item->uuid }}" name="quantity--{{ $item->uuid }}" value="{{ $item->quantity }}" min="1">
                                     </td>
                                     <td>{{ $item->line_total }}</td>
                                     <td>
                                         <form action="{{ route('cart.remove') }}" method="post">
                                             @csrf
-                                            <input type="hidden" id="line_id" name="line_id" value="{{ $item->id }}">
+                                            <input type="hidden" id="line_id" name="line_id" value="{{ $item->uuid }}">
                                             <button type="submit" name="action" value="remove">X</button>
                                         </form>
                                     </td>

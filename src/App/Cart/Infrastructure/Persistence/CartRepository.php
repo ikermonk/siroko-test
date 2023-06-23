@@ -33,13 +33,16 @@ class CartRepository implements GetServiceInterface, AddServiceInterface, Update
         $this->clear_cart_apicall = $clearCartApicall;
     }
 
-    public function get(string $id): mixed {
-        $cart_res = $this->get_cart_apicall->api_call($_ENV["API_DOMAIN"] . "cart/" . $id, "GET", "");
-        $cart_obj = new Cart($cart_res["id"], $cart_res["user_id"], []);
+    public function get(string $id, string $by = null): mixed {
+        $data["id"] = $id;
+        $data["by"] = "";
+        if (isset($by) && $by !== "") $data["by"] = $by;
+        $cart_res = $this->get_cart_apicall->api_call($_ENV["API_DOMAIN"] . "cart" , "GET", $data);
+        $cart_obj = new Cart($cart_res["id"], $cart_res["uuid"], $cart_res["user_id"], []);
         if (isset($cart_res["items"]) && is_array($cart_res["items"]) && sizeof($cart_res["items"]) > 0) {
             foreach ($cart_res["items"] as $cart_item) {
                 $product = $this->product_repo->get($cart_item["product_id"]);
-                $cart_item_obj = new CartItem($cart_item["id"], $product->id, $product->name, $cart_item["quantity"], $product->price, ($product->price * $cart_item["quantity"]));
+                $cart_item_obj = new CartItem($cart_item["id"], $cart_item["uuid"], $product->id, $product->name, $cart_item["quantity"], $product->price, ($product->price * $cart_item["quantity"]));
                 array_push($cart_obj->items, $cart_item_obj);
             }
         }
@@ -48,11 +51,11 @@ class CartRepository implements GetServiceInterface, AddServiceInterface, Update
 
     public function add(mixed $object): mixed {
         $cart_res = $this->add_line_to_cart_apicall->api_call($_ENV["API_DOMAIN"] . "cart-item", "POST", $object);
-        $cart_obj = new Cart($cart_res["id"], $cart_res["user_id"], []);
+        $cart_obj = new Cart($cart_res["id"], $cart_res["uuid"], $cart_res["user_id"], []);
         if (isset($cart_res["items"]) && is_array($cart_res["items"]) && sizeof($cart_res["items"]) > 0) {
             foreach ($cart_res["items"] as $cart_item) {
                 $product = $this->product_repo->get($cart_item["product_id"]);
-                $cart_item_obj = new CartItem($cart_item["id"], $product->id, $product->name, $cart_item["quantity"], $product->price, ($product->price * $cart_item["quantity"]));
+                $cart_item_obj = new CartItem($cart_item["id"], $cart_item["uuid"], $product->id, $product->name, $cart_item["quantity"], $product->price, ($product->price * $cart_item["quantity"]));
                 array_push($cart_obj->items, $cart_item_obj);
             }
         }
@@ -63,11 +66,11 @@ class CartRepository implements GetServiceInterface, AddServiceInterface, Update
         $data['user_id'] = (isset ($user_id)) ? $user_id : null;
         $data['items'] = $object;
         $cart_res = $this->update_cart_apicall->api_call($_ENV["API_DOMAIN"] . "cart/" . $id, "PUT", $data);
-        $cart_obj = new Cart($cart_res["id"], $cart_res["user_id"], []);
+        $cart_obj = new Cart($cart_res["id"], $cart_res["uuid"], $cart_res["user_id"], []);
         if (isset($cart_res["items"]) && is_array($cart_res["items"]) && sizeof($cart_res["items"]) > 0) {
             foreach ($cart_res["items"] as $cart_item) {
                 $product = $this->product_repo->get($cart_item["product_id"]);
-                $cart_item_obj = new CartItem($cart_item["id"], $product->id, $product->name, $cart_item["quantity"], $product->price, ($product->price * $cart_item["quantity"]));
+                $cart_item_obj = new CartItem($cart_item["id"], $cart_item["uuid"], $product->id, $product->name, $cart_item["quantity"], $product->price, ($product->price * $cart_item["quantity"]));
                 array_push($cart_obj->items, $cart_item_obj);
             }
         }
@@ -76,11 +79,11 @@ class CartRepository implements GetServiceInterface, AddServiceInterface, Update
 
     public function delete(mixed $object): Cart {
         $cart_res = $this->delete_item_apicall->api_call($_ENV["API_DOMAIN"] . "remove-item", "DELETE", $object);
-        $cart_obj = new Cart($cart_res["id"], $cart_res["user_id"], []);
+        $cart_obj = new Cart($cart_res["id"], $cart_res["uuid"], $cart_res["user_id"], []);
         if (isset($cart_res["items"]) && is_array($cart_res["items"]) && sizeof($cart_res["items"]) > 0) {
             foreach ($cart_res["items"] as $cart_item) {
                 $product = $this->product_repo->get($cart_item["product_id"]);
-                $cart_item_obj = new CartItem($cart_item["id"], $product->id, $product->name, $cart_item["quantity"], $product->price, ($product->price * $cart_item["quantity"]));
+                $cart_item_obj = new CartItem($cart_item["id"], $cart_item["uuid"], $product->id, $product->name, $cart_item["quantity"], $product->price, ($product->price * $cart_item["quantity"]));
                 array_push($cart_obj->items, $cart_item_obj);
             }
         }
@@ -89,11 +92,11 @@ class CartRepository implements GetServiceInterface, AddServiceInterface, Update
 
     public function clear(mixed $data): Cart {
         $cart_res = $this->clear_cart_apicall->api_call($_ENV["API_DOMAIN"] . "clear", "DELETE", $data);
-        $cart_obj = new Cart($cart_res["id"], $cart_res["user_id"], []);
+        $cart_obj = new Cart($cart_res["id"], $cart_res["uuid"], $cart_res["user_id"], []);
         if (isset($cart_res["items"]) && is_array($cart_res["items"]) && sizeof($cart_res["items"]) > 0) {
             foreach ($cart_res["items"] as $cart_item) {
                 $product = $this->product_repo->get($cart_item["product_id"]);
-                $cart_item_obj = new CartItem($cart_item["id"], $product->id, $product->name, $cart_item["quantity"], $product->price, ($product->price * $cart_item["quantity"]));
+                $cart_item_obj = new CartItem($cart_item["id"], $cart_item["uuid"], $product->id, $product->name, $cart_item["quantity"], $product->price, ($product->price * $cart_item["quantity"]));
                 array_push($cart_obj->items, $cart_item_obj);
             }
         }

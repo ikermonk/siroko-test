@@ -30,7 +30,7 @@ class RequestClearCart {
     }
 
     private function get_item_line(string $item): mixed {
-        $item_exploded = explode("-", $item);
+        $item_exploded = explode("--", $item);
         $id_line = $item_exploded[1];
         return $id_line;
     }

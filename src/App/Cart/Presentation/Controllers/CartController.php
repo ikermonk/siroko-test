@@ -40,7 +40,7 @@ class CartController {
         //Get User:
         $user = $this->user_service->get_user_session();
         //Get Cart
-        $requestCart = new RequestId($user);
+        $requestCart = new RequestId($user, "user");
         $cart = $this->get_cart_service->get_cart($requestCart);
         return view('cart', ["cart" => $cart]);
     }
@@ -50,11 +50,11 @@ class CartController {
             //Get User:
             $user = $this->user_service->get_user_session();
             //Get User Cart:
-            $requestCart = new RequestId($user);
+            $requestCart = new RequestId($user, "user");
             $cart = $this->get_cart_service->get_cart($requestCart);
             //Add Line to Cart:
             if(isset($request["product_id"]) && $request["product_id"] !== "" && isset($request["quantity"]) && $request["quantity"] > 0) {
-                $requestAddToCart = new RequestAddItem($cart->id, $user, $request["product_id"], $request["quantity"]);
+                $requestAddToCart = new RequestAddItem($cart->uuid, $user, $request["product_id"], $request["quantity"]);
                 $cart = $this->add_line_cart_service->add($requestAddToCart);
                 return Redirect::route('cart');
             }
@@ -156,10 +156,10 @@ class CartController {
         //Get User:
         $user = $this->user_service->get_user_session();
         //Get Cart
-        $requestCart = new RequestId($user);
+        $requestCart = new RequestId($user, "user");
         $cart = $this->get_cart_service->get_cart($requestCart);
         if (isset($cart) && isset($cart->items) && is_array($cart->items) && sizeof($cart->items) > 0) {
-            return Redirect::route('cart');
+            return view('checkout', ["cart" => $cart]);
         }
         return Redirect::route('/', ["cart" => $cart]);
     } 

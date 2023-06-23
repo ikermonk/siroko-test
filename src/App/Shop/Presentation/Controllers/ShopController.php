@@ -20,7 +20,7 @@ class ShopController {
     public function index() {
         //Get User:
         $user = $this->user_service->get_user_session();
-        $requestCart = new RequestId($user);
+        $requestCart = new RequestId($user, "user");
         $cart = $this->get_cart_service->get_cart($requestCart);
         //Get Products:
         $products = $this->getProducts_service->get_products();

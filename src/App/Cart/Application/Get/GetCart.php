@@ -11,7 +11,7 @@ class GetCart {
     }
 
     public function get_cart(RequestId $request) {
-        return $this->cart_repo->get($request->getId());
+        return $this->cart_repo->get($request->getId(), $request->getBy());
     }
 }
 ?>
