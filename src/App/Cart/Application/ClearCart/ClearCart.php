@@ -2,7 +2,7 @@
 namespace Siroko\App\Cart\Application\ClearCart;
 
 use Siroko\App\Cart\Domain\Cart;
-use Siroko\Shared\Request\RequestClearCart;
+use Siroko\Shared\Request\RequestId;
 use Siroko\App\Cart\Infrastructure\Persistence\CartRepository;
 
 class ClearCart {
@@ -11,9 +11,8 @@ class ClearCart {
         $this->cart_repo = $cartRepo;
     }
 
-    public function clear(RequestClearCart $request): Cart {
-        $data['user_id'] = $request->user_id;
-        $data['items'] = $request->items;
+    public function clear(RequestId $request): Cart {
+        $data["id_cart"] = $request->getId();
         return $this->cart_repo->clear($data);
     }
 }

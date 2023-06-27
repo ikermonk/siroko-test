@@ -9,7 +9,6 @@ use Siroko\Shared\User\UserService;
 use Siroko\Shared\Request\RequestId;
 use Illuminate\Support\Facades\Redirect;
 use Siroko\Shared\Request\RequestAddItem;
-use Siroko\Shared\Request\RequestClearCart;
 use Siroko\App\Cart\Application\Get\GetCart;
 use Siroko\Shared\Request\RequestRemoveItem;
 use Siroko\Shared\Request\RequestUpdateCart;
@@ -136,7 +135,7 @@ class CartController {
             //Get User:
             $user = $this->user_service->get_user_session();
             //Clear Cart:
-            $requestClearCart = new RequestClearCart($user, $request->all());
+            $requestClearCart = new RequestId($request->id_cart, "");
             if ($requestClearCart->validate()) {
                 $cart = $this->clear_cart_service->clear($requestClearCart);
                 return Redirect::route('cart');

@@ -7,7 +7,7 @@
         @if (isset($cart) && isset($cart->items) && is_array($cart->items) && sizeof($cart->items) > 0)
             <form action="{{ route('cart.change') }}" method="post">
                 @csrf
-                <input type="hidden" id="cart_id" name="cart_id" value="{{ $cart->uuid }}">
+                <input type="hidden" id="id_cart" name="id_cart" value="{{ $cart->uuid }}">
                 <div class="content-table">
                     <table>
                         <thead>
