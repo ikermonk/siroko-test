@@ -21,7 +21,7 @@ class RequestUpdateCart {
             $data = new stdClass();
             $data->items = [];
             foreach ($objet as $key => $val) {
-                if ($key === "cart_id") $data->id_cart = $val;
+                if ($key === "id_cart") $data->id_cart = $val;
                 elseif (str_contains($key, 'quantity')) {
                     $item = $this->get_item_info($key, $val);
                     array_push($data->items, $item);
