@@ -111,11 +111,11 @@ class CartController {
 
     public function remove(Request $request) {
         try {
-            //Get User:
-            $user = $this->user_service->get_user_session();
-            if (isset($request["line_id"]) && $request["line_id"] !== "") {
+            //Request:
+            $data = $request->all();
+            $requestDelete = new RequestRemoveItem($data["line_id"], $data["id_cart"]);
+            if ($requestDelete->validate()) {
                 //Remove Cart Line:
-                $requestDelete = new RequestRemoveItem($request["line_id"], $user);
                 $cart = $this->delete_item_service->remove_item($requestDelete);
                 return Redirect::route('cart');
             }
@@ -135,9 +135,9 @@ class CartController {
             //Get User:
             $user = $this->user_service->get_user_session();
             //Clear Cart:
-            $requestClearCart = new RequestId($request->id_cart, "");
-            if ($requestClearCart->validate()) {
-                $cart = $this->clear_cart_service->clear($requestClearCart);
+            $requestId = new RequestId($request->id_cart, "");
+            if ($requestId->validate()) {
+                $cart = $this->clear_cart_service->clear($requestId);
                 return Redirect::route('cart');
             }
             return response()->json([

@@ -29,6 +29,7 @@
                                     <td>
                                         <form action="{{ route('cart.remove') }}" method="post">
                                             @csrf
+                                            <input type="hidden" id="id_cart" name="id_cart" value="{{ $cart->uuid }}">
                                             <input type="hidden" id="line_id" name="line_id" value="{{ $item->uuid }}">
                                             <button type="submit" name="action" value="remove">X</button>
                                         </form>

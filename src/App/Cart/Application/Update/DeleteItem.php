@@ -13,7 +13,7 @@ class DeleteItem {
 
     public function remove_item(RequestRemoveItem $request): Cart {
         $data["id_line"] = $request->id;
-        $data["user_id"] = $request->user_id;
+        $data["id_cart"] = $request->id_cart;
         return $this->cart_repo->delete($data);
     }
 }
